@@ -4,7 +4,10 @@ import random
 import telebot
 
 import config
-from services.news import get_news
+from routes.welcome import welcome
+from routes.hello import send_hello
+from routes.lover import diem
+from services.news import handler_news
 from routes.animals import handler_cat
 
 bot = telebot.TeleBot(config.token_tele, parse_mode=None)
@@ -36,8 +39,15 @@ bot = telebot.TeleBot(config.token_tele, parse_mode=None)
 # def echo_all(message):
 #     bot.reply_to(message, message.text)
 
+bot.register_message_handler(welcome(bot), commands=["start"])
+
+bot.register_message_handler(send_hello(bot), commands=["hello"])
+
 bot.register_message_handler(handler_cat(bot), commands=["cat"])
 
+bot.register_message_handler(handler_news(bot), commands=["news"])
+
+bot.register_message_handler(diem(bot), commands=["cutegirl"])
 
 if "__main__" == __name__:
     bot.infinity_polling()
